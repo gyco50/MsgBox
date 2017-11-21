@@ -106,7 +106,7 @@ namespace TestMsgBoxCheck
 
 		private void btnTest_Click(object sender, System.EventArgs e)
 		{
-			MsgBoxCheck.MessageBox dlg = new MsgBoxCheck.MessageBox();
+			MessageBox dlg = new MessageBox();
 			DialogResult dr = dlg.Show(@"Software\PricklySoft\TestMsgBoxCheck","DontShowAgain",DialogResult.OK,
                 "Don't ask me this again","Now is the time for all good men to check this message box", "Hello",
 				MessageBoxButtons.OK, MessageBoxIcon.Information); 

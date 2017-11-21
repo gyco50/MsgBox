@@ -1,28 +1,30 @@
 using System;
-using System.Text;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using MsdnMag;			// For LocalCbtHook
-using Microsoft.Win32;	// For RegKey
+using System.Windows.Forms;
+using Microsoft.Win32;
+using MsdnMag;
+// For LocalCbtHook
 
-namespace MsgBoxCheck
+// For RegKey
+
+namespace TestMsgBoxCheck
 {
 	public class MessageBox
 	{
-		protected LocalCbtHook m_cbt;
-		protected IntPtr m_hwnd = IntPtr.Zero;
-		protected IntPtr m_hwndBtn = IntPtr.Zero;
-		protected bool m_bInit = false;
-		protected bool m_bCheck = false;
-		protected string m_strCheck;
+	    private readonly LocalCbtHook _mCbt;
+	    private IntPtr _mHwnd = IntPtr.Zero;
+	    private IntPtr _mHwndBtn = IntPtr.Zero;
+	    private bool _mBInit = false;
+	    private bool _mBCheck = false;
+	    private string _mStrCheck;
 
 		public MessageBox()
 		{
-			m_cbt = new LocalCbtHook();
-			m_cbt.WindowCreated += new LocalCbtHook.CbtEventHandler(WndCreated);
-			m_cbt.WindowDestroyed += new LocalCbtHook.CbtEventHandler(WndDestroyed);
-			m_cbt.WindowActivated += new LocalCbtHook.CbtEventHandler(WndActivated);
+			_mCbt = new LocalCbtHook();
+			_mCbt.WindowCreated += new LocalCbtHook.CbtEventHandler(WndCreated);
+			_mCbt.WindowDestroyed += new LocalCbtHook.CbtEventHandler(WndDestroyed);
+			_mCbt.WindowActivated += new LocalCbtHook.CbtEventHandler(WndActivated);
 		}
 
 		public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle, MessageBoxButtons buttons, MessageBoxIcon icon)
@@ -39,12 +41,12 @@ namespace MsgBoxCheck
 				// but if so we proceed as if the value was false.
 			}
 
-			m_strCheck = strCheck;
-			m_cbt.Install();
+			_mStrCheck = strCheck;
+			_mCbt.Install();
 			dr = System.Windows.Forms.MessageBox.Show(strText, strTitle, buttons, icon);
-			m_cbt.Uninstall();
+			_mCbt.Uninstall();
 
-			regKey.SetValue(strValue,m_bCheck);
+			regKey.SetValue(strValue,_mBCheck);
 			return dr;
 		}
 
@@ -67,55 +69,55 @@ namespace MsgBoxCheck
 		{
 			if (e.IsDialogWindow)
 			{
-				m_bInit = false;
-				m_hwnd = e.Handle;
+				_mBInit = false;
+				_mHwnd = e.Handle;
 			}
 		}
 	
 		private void WndDestroyed(object sender, CbtEventArgs e)
 		{
-			if (e.Handle == m_hwnd)
+			if (e.Handle == _mHwnd)
 			{
-				m_bInit = false;
-				m_hwnd = IntPtr.Zero;
-				if(BST_CHECKED == (int)SendMessage(m_hwndBtn,BM_GETCHECK,IntPtr.Zero,IntPtr.Zero))
-					m_bCheck = true;
+				_mBInit = false;
+				_mHwnd = IntPtr.Zero;
+				if(BstChecked == (int)SendMessage(_mHwndBtn,BmGetcheck,IntPtr.Zero,IntPtr.Zero))
+					_mBCheck = true;
 			}
 		}
 
 		private void WndActivated(object sender, CbtEventArgs e)
 		{
-			if (m_hwnd != e.Handle)
+			if (_mHwnd != e.Handle)
 				return;
 
 			// Not the first time
-			if (m_bInit)
+			if (_mBInit)
 				return;
 			else
-				m_bInit = true;
+				_mBInit = true;
 
 			// Get the current font, either from the static text window
 			// or the message box itself
 			IntPtr hFont;
-			IntPtr hwndText = GetDlgItem(m_hwnd, 0xFFFF);
+			IntPtr hwndText = GetDlgItem(_mHwnd, 0xFFFF);
 			if(hwndText != IntPtr.Zero)
-				hFont = SendMessage(hwndText, WM_GETFONT, IntPtr.Zero, IntPtr.Zero);			
+				hFont = SendMessage(hwndText, WmGetfont, IntPtr.Zero, IntPtr.Zero);			
 			else
-				hFont = SendMessage(m_hwnd, WM_GETFONT, IntPtr.Zero, IntPtr.Zero);			
+				hFont = SendMessage(_mHwnd, WmGetfont, IntPtr.Zero, IntPtr.Zero);			
 			Font fCur = Font.FromHfont(hFont);
 	
 			// Get the x coordinate for the check box.  Align it with the icon if possible,
 			// or one character height in
 			int x = 0;
-			IntPtr hwndIcon = GetDlgItem(m_hwnd, 0x0014);
+			IntPtr hwndIcon = GetDlgItem(_mHwnd, 0x0014);
 			if(hwndIcon != IntPtr.Zero)
 			{
-				RECT rcIcon = new RECT();
+				Rect rcIcon = new Rect();
 				GetWindowRect(hwndIcon, rcIcon);
-				POINT pt = new POINT();
+				Point pt = new Point();
 				pt.x = rcIcon.left;
 				pt.y = rcIcon.top;
-				ScreenToClient(m_hwnd, pt);
+				ScreenToClient(_mHwnd, pt);
 				x = pt.x;
 			}
 			else
@@ -123,59 +125,59 @@ namespace MsgBoxCheck
 
 			// Get the y coordinate for the check box, which is the bottom of the
 			// current message box client area
-			RECT rc = new RECT();
-			GetClientRect(m_hwnd, rc);
+			Rect rc = new Rect();
+			GetClientRect(_mHwnd, rc);
 			int y = rc.bottom - rc.top;
 
 			// Resize the message box with room for the check box
-			GetWindowRect(m_hwnd, rc);
-			MoveWindow(m_hwnd,rc.left,rc.top,rc.right-rc.left,rc.bottom-rc.top + (int)fCur.GetHeight()*2,true);
+			GetWindowRect(_mHwnd, rc);
+			MoveWindow(_mHwnd,rc.left,rc.top,rc.right-rc.left,rc.bottom-rc.top + (int)fCur.GetHeight()*2,true);
 
-			m_hwndBtn = CreateWindowEx(0, "button", m_strCheck, BS_AUTOCHECKBOX|WS_CHILD|WS_VISIBLE|WS_TABSTOP, 
+			_mHwndBtn = CreateWindowEx(0, "button", _mStrCheck, BsAutocheckbox|WsChild|WsVisible|WsTabstop, 
 				x, y , rc.right-rc.left-x, (int)fCur.GetHeight(),
-				m_hwnd, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+				_mHwnd, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
-			SendMessage(m_hwndBtn, WM_SETFONT, hFont, new IntPtr(1));			
+			SendMessage(_mHwndBtn, WmSetfont, hFont, new IntPtr(1));			
 		}
 
 		#region Win32 Imports
-		private const int WS_VISIBLE		= 0x10000000;
-		private const int WS_CHILD			= 0x40000000;
-		private const int WS_TABSTOP        = 0x00010000;
-		private const int WM_SETFONT		= 0x00000030;
-		private const int WM_GETFONT		= 0x00000031;
-		private const int BS_AUTOCHECKBOX	= 0x00000003; 
-		private const int BM_GETCHECK       = 0x00F0;
-		private const int BST_CHECKED       = 0x0001;
+		private const int WsVisible		= 0x10000000;
+		private const int WsChild			= 0x40000000;
+		private const int WsTabstop        = 0x00010000;
+		private const int WmSetfont		= 0x00000030;
+		private const int WmGetfont		= 0x00000031;
+		private const int BsAutocheckbox	= 0x00000003; 
+		private const int BmGetcheck       = 0x00F0;
+		private const int BstChecked       = 0x0001;
 
 		[DllImport("user32.dll")]
 		protected static extern void DestroyWindow(IntPtr hwnd);
 	
 		[DllImport("user32.dll")]
-		protected static extern IntPtr GetDlgItem(IntPtr hwnd, int id);
+		private static extern IntPtr GetDlgItem(IntPtr hwnd, int id);
 		
 		[DllImport("user32.dll")]
-		protected static extern int GetWindowRect(IntPtr hwnd, RECT rc);
+		protected static extern int GetWindowRect(IntPtr hwnd, Rect rc);
 		
 		[DllImport("user32.dll")]
-		protected static extern int GetClientRect(IntPtr hwnd, RECT rc);
+		protected static extern int GetClientRect(IntPtr hwnd, Rect rc);
 		
 		[DllImport("user32.dll")]
-		protected static extern void MoveWindow(IntPtr hwnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
+		private static extern void MoveWindow(IntPtr hwnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 		
 		[DllImport("user32.dll")]
-		protected static extern int ScreenToClient(IntPtr hwnd, POINT pt);
+		protected static extern int ScreenToClient(IntPtr hwnd, Point pt);
 		
 		[DllImport("user32.dll", EntryPoint="MessageBox")]
 		protected static extern int _MessageBox(IntPtr hwnd, string text, string caption,
 			int options);
 	
 		[DllImport("user32.dll")]
-		protected static extern IntPtr SendMessage(IntPtr hwnd, 
+		private static extern IntPtr SendMessage(IntPtr hwnd, 
 			int msg, IntPtr wParam, IntPtr lParam);
 
 		[DllImport("user32.dll")]
-		protected static extern IntPtr CreateWindowEx(
+		private static extern IntPtr CreateWindowEx(
 			int dwExStyle,			// extended window style
 			string lpClassName,		// registered class name
 			string lpWindowName,	// window name
@@ -191,14 +193,14 @@ namespace MsgBoxCheck
 			);
 	
 		[StructLayout(LayoutKind.Sequential)]
-		public class POINT
+		protected class Point
 		{ 
 			public int x;
 			public int y;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		public class RECT
+		protected class Rect
 		{ 
 			public int left; 
 			public int top; 
