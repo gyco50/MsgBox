@@ -89,7 +89,7 @@ namespace TestMsgBoxCheck
 			this.Controls.Add(this._label1);
 			this.Controls.Add(this._btnTest);
 			this.Name = "TestMsgBoxCheckForm";
-			this.Text = "TestMsgBoxCheck - version Guy2";
+			this.Text = "TestMsgBoxCheck - version Guy6";
 			this.ResumeLayout(false);
 
 		}
