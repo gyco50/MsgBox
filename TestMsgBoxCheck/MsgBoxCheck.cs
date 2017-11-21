@@ -15,24 +15,24 @@ namespace TestMsgBoxCheck
 	    private readonly LocalCbtHook _mCbt;
 	    private IntPtr _mHwnd = IntPtr.Zero;
 	    private IntPtr _mHwndBtn = IntPtr.Zero;
-	    private bool _mBInit = false;
-	    private bool _mBCheck = false;
+	    private bool _mBInit;
+	    private bool _mBCheck;
 	    private string _mStrCheck;
 
 		public MessageBox()
 		{
 			_mCbt = new LocalCbtHook();
-			_mCbt.WindowCreated += new LocalCbtHook.CbtEventHandler(WndCreated);
-			_mCbt.WindowDestroyed += new LocalCbtHook.CbtEventHandler(WndDestroyed);
-			_mCbt.WindowActivated += new LocalCbtHook.CbtEventHandler(WndActivated);
+			_mCbt.WindowCreated += WndCreated;
+			_mCbt.WindowDestroyed += WndDestroyed;
+			_mCbt.WindowActivated += WndActivated;
 		}
 
-		public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle, MessageBoxButtons buttons, MessageBoxIcon icon)
+		public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle, MessageBoxButtons buttons, MessageBoxIcon icon = MessageBoxIcon.None)
 		{
 			RegistryKey regKey = Registry.CurrentUser.CreateSubKey(strKey);
 			try
 			{
-				if(Convert.ToBoolean(regKey.GetValue(strValue,false)))
+				if(regKey != null && Convert.ToBoolean(regKey.GetValue(strValue,false)))
 					return dr;
 			}
 			catch 
@@ -46,16 +46,11 @@ namespace TestMsgBoxCheck
 			dr = System.Windows.Forms.MessageBox.Show(strText, strTitle, buttons, icon);
 			_mCbt.Uninstall();
 
-			regKey.SetValue(strValue,_mBCheck);
-			return dr;
+		    regKey?.SetValue(strValue, _mBCheck);
+		    return dr;
 		}
 
-		public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle, MessageBoxButtons buttons)
-		{
-			return Show(strKey, strValue, dr, strCheck, strText, strTitle, buttons, MessageBoxIcon.None);
-		}
-		
-		public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle)
+	    public DialogResult Show(string strKey, string strValue, DialogResult dr, string strCheck, string strText, string strTitle)
 		{
 			return Show(strKey, strValue, dr, strCheck, strText, strTitle, MessageBoxButtons.OK, MessageBoxIcon.None);
 		}
