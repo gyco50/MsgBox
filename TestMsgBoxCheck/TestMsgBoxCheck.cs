@@ -59,7 +59,7 @@ namespace TestMsgBoxCheck
 			this._btnTest.Name = "_btnTest";
 			this._btnTest.Size = new System.Drawing.Size(128, 23);
 			this._btnTest.TabIndex = 0;
-			this._btnTest.Text = "Test MsgBoxCheck";
+			this._btnTest.Text = "MsgBox guy";
 			this._btnTest.Click += new System.EventHandler(this.btnTest_Click);
 			// 
 			// label1
