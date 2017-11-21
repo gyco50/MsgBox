@@ -1,7 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgBoxCheck", "MsgBoxCheck\MsgBoxCheck.csproj", "{43D66268-9336-4118-A30E-FC43CED0E62D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMsgBoxCheck", "TestMsgBoxCheck\TestMsgBoxCheck.csproj", "{EB09CDA0-EF4C-4534-BC51-81AC6A1A70EE}"
 EndProject
 Global
@@ -10,6 +12,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43D66268-9336-4118-A30E-FC43CED0E62D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D66268-9336-4118-A30E-FC43CED0E62D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D66268-9336-4118-A30E-FC43CED0E62D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D66268-9336-4118-A30E-FC43CED0E62D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB09CDA0-EF4C-4534-BC51-81AC6A1A70EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB09CDA0-EF4C-4534-BC51-81AC6A1A70EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB09CDA0-EF4C-4534-BC51-81AC6A1A70EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
