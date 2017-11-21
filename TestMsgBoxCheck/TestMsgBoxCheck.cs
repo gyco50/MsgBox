@@ -55,7 +55,7 @@ namespace TestMsgBoxCheck
 			// 
 			// btnTest
 			// 
-			this._btnTest.Location = new System.Drawing.Point(8, 96);
+			this._btnTest.Location = new System.Drawing.Point(8, 110);
 			this._btnTest.Name = "_btnTest";
 			this._btnTest.Size = new System.Drawing.Size(128, 23);
 			this._btnTest.TabIndex = 0;
@@ -66,15 +66,15 @@ namespace TestMsgBoxCheck
 			// 
 			this._label1.Location = new System.Drawing.Point(8, 8);
 			this._label1.Name = "_label1";
-			this._label1.Size = new System.Drawing.Size(264, 80);
+			this._label1.Size = new System.Drawing.Size(264, 100);
 			this._label1.TabIndex = 1;
-			this._label1.Text = "Press the button below to test the MsgBoxCheck class.  If you check the \"Don\'t sh" +
+			this._label1.Text = "This the version from GUY.  \n\nPress the button below to test the MsgBoxCheck class.  If you check the \"Don\'t sh" +
 				"ow me this again\" box pressing the button below will have no affect, unless you " +
 				"use the other button to clear the registry variable.";
 			// 
 			// btnClear
 			// 
-			this._btnClear.Location = new System.Drawing.Point(144, 96);
+			this._btnClear.Location = new System.Drawing.Point(144, 110);
 			this._btnClear.Name = "_btnClear";
 			this._btnClear.Size = new System.Drawing.Size(120, 23);
 			this._btnClear.TabIndex = 2;
@@ -84,7 +84,7 @@ namespace TestMsgBoxCheck
 			// TestMsgBoxCheckForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(280, 126);
+			this.ClientSize = new System.Drawing.Size(280, 150);
 			this.Controls.Add(this._btnClear);
 			this.Controls.Add(this._label1);
 			this.Controls.Add(this._btnTest);
