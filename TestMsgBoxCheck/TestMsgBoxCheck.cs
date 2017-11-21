@@ -68,7 +68,7 @@ namespace TestMsgBoxCheck
 			this._label1.Name = "_label1";
 			this._label1.Size = new System.Drawing.Size(264, 100);
 			this._label1.TabIndex = 1;
-			this._label1.Text = "This the version from GUY- version 2.  \n\nPress the button below to test the MsgBoxCheck class.  If you check the \"Don\'t sh" +
+			this._label1.Text = "This the version from GUY- version 3.  \n\nPress the button below to test the MsgBoxCheck class.  If you check the \"Don\'t sh" +
 				"ow me this again\" box pressing the button below will have no affect, unless you " +
 				"use the other button to clear the registry variable.";
 			// 
