@@ -1,9 +1,5 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using Microsoft.Win32;	// For RegKey
 
 namespace TestMsgBoxCheck
@@ -21,7 +17,7 @@ namespace TestMsgBoxCheck
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public TestMsgBoxCheckForm()
+	    private TestMsgBoxCheckForm()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -40,10 +36,7 @@ namespace TestMsgBoxCheck
 		{
 			if( disposing )
 			{
-				if (components != null) 
-				{
-					components.Dispose();
-				}
+			    components?.Dispose();
 			}
 			base.Dispose( disposing );
 		}
